@@ -9,6 +9,6 @@ public class MemberController {
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String hello() {
-        return "hello1";
+        return "hello";
     }
 }

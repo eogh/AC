@@ -14,21 +14,21 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "name"})
-public class Group {
+public class Team {
 
     @Id
     @GeneratedValue
-    @Column(name = "group_id")
+    @Column(name = "TEAM_ID")
     private Long id;
     private String name;
 
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-//    @OneToMany(mappedBy = "group")
-//    private List<Member> members = new ArrayList<>();
+    @OneToMany(mappedBy = "team")
+    private List<Member> members = new ArrayList<>();
 
-    public Group(String name) {
+    public Team(String name) {
         this.name = name;
     }
 }

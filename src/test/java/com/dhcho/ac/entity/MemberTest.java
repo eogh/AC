@@ -7,6 +7,7 @@ import org.springframework.test.annotation.Rollback;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -18,15 +19,27 @@ class MemberTest {
 
     @Test
     public void testEntity() {
-        Group groupA = new Group("groupA");
-        Group groupB = new Group("groupB");
-        em.persist(groupA);
-        em.persist(groupB);
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        em.persist(teamA);
+        em.persist(teamB);
 
-//        Member member1 = new Member("member1", groupA);
-//        Member member2 = new Member("member2", groupB);
+        Member member1 = new Member("member1", teamA);
+        Member member2 = new Member("member2", teamB);
+        em.persist(member1);
+        em.persist(member2);
 
+        // 초기화
         em.flush();
         em.clear();
+
+        // 확인
+        List<Member> members = em.createQuery("select m from Member m", Member.class)
+                .getResultList();
+
+        for (Member member : members) {
+            System.out.println("member : " + member);
+            System.out.println("member.team : " + member.getTeam());
+        }
     }
 }

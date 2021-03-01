@@ -16,7 +16,7 @@ public class Member {
 
     @Id
     @GeneratedValue
-    @Column(name = "member_id")
+    @Column(name = "MEMBER_ID")
     private Long id;
     private String name;
     private LocalDateTime birthday;
@@ -24,27 +24,28 @@ public class Member {
     private BirthdayType birthday_type;
     @Enumerated(EnumType.STRING)
     private GenderType gender;
+    private String qrcode;
 
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
     public Member(String name) {
         this.name = name;
     }
 
-    public Member(String name, Group group) {
+    public Member(String name, Team team) {
         this.name = name;
-        if (group != null) {
-            changeGroup(group);
+        if (team != null) {
+            changeTeam(team);
         }
     }
 
-    public void changeGroup(Group group) {
-        this.group = group;
-//        group.getMembers().add(this);
+    public void changeTeam(Team team) {
+        this.team = team;
+//        team.getMembers().add(this);
     }
 }

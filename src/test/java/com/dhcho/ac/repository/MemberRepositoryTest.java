@@ -1,6 +1,6 @@
 package com.dhcho.ac.repository;
 
-import com.dhcho.ac.entity.Group;
+import com.dhcho.ac.entity.Team;
 import com.dhcho.ac.entity.Member;
 import org.assertj.core.api.OptionalAssert;
 import org.junit.jupiter.api.Test;

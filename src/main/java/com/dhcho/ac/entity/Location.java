@@ -18,6 +18,8 @@ public class Location {
     @GeneratedValue
     @Column(name = "LOCATION_ID")
     private Long id;
+
     private String name;
+
     private String desc;
 }

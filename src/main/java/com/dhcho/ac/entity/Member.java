@@ -1,9 +1,6 @@
 package com.dhcho.ac.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,15 +15,21 @@ public class Member {
     @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
+
     private String name;
+
     private LocalDateTime birthday;
+
     @Enumerated(EnumType.STRING)
     private BirthdayType birthday_type;
+
     @Enumerated(EnumType.STRING)
     private GenderType gender;
+
     private String qrcode;
 
     private LocalDateTime created_at;
+
     private LocalDateTime updated_at;
 
     @ManyToOne(fetch = FetchType.LAZY)

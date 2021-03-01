@@ -16,6 +16,7 @@ public class Access {
     @GeneratedValue
     @Column(name = "ACCESS_ID")
     private Long id;
+
     private LocalDateTime access_date;
 
     @ManyToOne(fetch = FetchType.LAZY)

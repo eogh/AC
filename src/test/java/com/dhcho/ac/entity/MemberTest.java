@@ -49,7 +49,7 @@ class MemberTest {
     }
 
     @Test
-    public void JpaEventBaseEntity() throws Exception {
+    public void JpaEventBaseTimeEntity() throws Exception {
         Member member = new Member("member11");
         memberRepository.save(member);
 

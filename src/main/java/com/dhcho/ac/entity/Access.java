@@ -10,14 +10,12 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Access {
+public class Access extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
     @Column(name = "ACCESS_ID")
     private Long id;
-
-    private LocalDateTime access_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")

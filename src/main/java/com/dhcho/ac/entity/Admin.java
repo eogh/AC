@@ -12,7 +12,8 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Admin {
+public class Admin extends BaseTimeEntity {
+
     @Id
     @GeneratedValue
     @Column(name = "ADMIN_ID")

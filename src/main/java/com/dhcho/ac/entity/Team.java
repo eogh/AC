@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "name"})
-public class Team {
+public class Team extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -22,10 +22,6 @@ public class Team {
     private Long id;
 
     private String name;
-
-    private LocalDateTime created_at;
-
-    private LocalDateTime updated_at;
 
     @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();

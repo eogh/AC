@@ -9,13 +9,14 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "name"})
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "MEMBER_ID")
+    @Column(name = "MEMBER_ID", nullable = false)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     private LocalDateTime birthday;
@@ -28,10 +29,6 @@ public class Member {
 
     private String qrcode;
 
-    private LocalDateTime created_at;
-
-    private LocalDateTime updated_at;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
@@ -40,8 +37,14 @@ public class Member {
         this.name = name;
     }
 
-    public Member(String name, Team team) {
+    public Member(String name, String qrcode) {
         this.name = name;
+        this.qrcode = qrcode;
+    }
+
+    public Member(String name, String qrcode, Team team) {
+        this.name = name;
+        this.qrcode = qrcode;
         if (team != null) {
             changeTeam(team);
         }

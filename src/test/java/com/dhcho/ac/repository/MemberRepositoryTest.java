@@ -63,4 +63,20 @@ class MemberRepositoryTest {
         long deletedCount = memberRepository.count();
         assertThat(deletedCount).isEqualTo(0);
     }
+
+    @Test
+    public void findByUsernameAndQrcodeIs() {
+        Member member1 = new Member("Member11", "12345");
+        Member member2 = new Member("Member11", "12345");
+        Member member3 = new Member("Member11", "123456");
+        Member member4 = new Member("Member22", "12345");
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+        memberRepository.save(member4);
+
+//        List<Member> list = memberRepository.findByNameAndQrcode("Member11", "12345");
+        List<Member> list = memberRepository.findUser("Member11", "12345");
+        assertThat(list.size()).isEqualTo(2);
+    }
 }

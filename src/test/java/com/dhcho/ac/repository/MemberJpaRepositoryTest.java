@@ -59,4 +59,19 @@ class MemberJpaRepositoryTest {
         long deletedCount = memberJpaRepository.count();
         assertThat(deletedCount).isEqualTo(0);
     }
+
+    @Test
+    public void findByUsernameAndQrcodeIs() {
+        Member member1 = new Member("Member11", "12345");
+        Member member2 = new Member("Member11", "12345");
+        Member member3 = new Member("Member11", "123456");
+        Member member4 = new Member("Member22", "12345");
+        memberJpaRepository.save(member1);
+        memberJpaRepository.save(member2);
+        memberJpaRepository.save(member3);
+        memberJpaRepository.save(member4);
+
+        List<Member> list = memberJpaRepository.findByNameAndQrcode("Member11", "12345");
+        assertThat(list.size()).isEqualTo(2);
+    }
 }

@@ -42,4 +42,11 @@ public class MemberJpaRepository {
     public Member find(Long id) {
         return em.find(Member.class, id);
     }
+
+    public List<Member> findByNameAndQrcode(String name, String qrcode) {
+        return em.createQuery("select m from Member m where m.name = :name and m.qrcode = :qrcode")
+                .setParameter("name", name)
+                .setParameter("qrcode", qrcode)
+                .getResultList();
+    }
 }

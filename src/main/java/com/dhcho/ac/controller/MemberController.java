@@ -3,8 +3,6 @@ package com.dhcho.ac.controller;
 import com.dhcho.ac.entity.Member;
 import com.dhcho.ac.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;

@@ -1,9 +1,7 @@
 package com.dhcho.ac.repository;
 
 import com.dhcho.ac.entity.GenderType;
-import com.dhcho.ac.entity.Team;
 import com.dhcho.ac.entity.Member;
-import org.assertj.core.api.OptionalAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,10 +10,8 @@ import org.springframework.test.annotation.Rollback;
 import javax.transaction.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

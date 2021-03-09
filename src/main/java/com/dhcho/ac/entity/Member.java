@@ -5,8 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "name"})
 public class Member extends BaseTimeEntity {
@@ -38,6 +37,14 @@ public class Member extends BaseTimeEntity {
     public Member(String name, GenderType gender) {
         this.name = name;
         this.gender = gender;
+    }
+
+    public Member(String name, GenderType gender, Birth birth, Address address, String qrcode) {
+        this.name = name;
+        this.gender = gender;
+        this.birth = birth;
+        this.address = address;
+        this.qrcode = qrcode;
     }
 
     public Member(String name, GenderType gender, Address address, String qrcode) {

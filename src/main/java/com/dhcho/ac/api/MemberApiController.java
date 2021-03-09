@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,14 +19,15 @@ public class MemberApiController {
     private final MemberRepository memberRepository;
 
     @PostMapping("/api/v1/members")
-    public Result addMemberV1(@RequestBody @Valid CreateMemberRequest request) {
+    public Result addMemberV1(@RequestBody @Valid MemberRequest request) {
         // 해당 팀이 존재하는지 확인 request.getTeamId()
-        Member member = new Member(request.getName(), request.getGender(), request.getAddress(), request.getQrcode());
+        Member member = new Member(request.getName(), request.getGender(), request.getBirth(), request.getAddress(), request.getQrcode());
         validateDuplicateMember(member);
         memberRepository.save(member);
         return new Result(new MemberDto(member));
     }
 
+    // TODO: 페이징처리 추가
     @GetMapping("/api/v1/members")
     public Result findMembersV1() {
         List<Member> findMembers = memberRepository.findAll();
@@ -40,7 +40,7 @@ public class MemberApiController {
     @PutMapping("/api/v1/members/{id}")
     public Result updateMemberV1(
             @PathVariable("id") Long id,
-            @RequestBody @Valid UpdateMemberRequest request) {
+            @RequestBody @Valid MemberRequest request) {
         Member findMember = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
         findMember.setName(request.getName());
@@ -55,18 +55,7 @@ public class MemberApiController {
     }
 
     @Data
-    static class CreateMemberRequest {
-        @NotEmpty
-        private String name;
-        private GenderType gender;
-        private Birth birth;
-        private Address address;
-        private String qrcode;
-        private String teamId;
-    }
-
-    @Data
-    static class UpdateMemberRequest {
+    static class MemberRequest {
         @NotEmpty
         private String name;
         private GenderType gender;

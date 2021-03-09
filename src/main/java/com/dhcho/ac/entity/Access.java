@@ -23,4 +23,9 @@ public class Access extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LOCATION_ID")
     private Location location;
+
+    public Access(Member member, Location location) {
+        this.member = member;
+        this.location = location;
+    }
 }

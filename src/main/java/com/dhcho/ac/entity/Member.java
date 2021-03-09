@@ -54,9 +54,11 @@ public class Member extends BaseTimeEntity {
         this.qrcode = qrcode;
     }
 
-    public Member(String name, GenderType gender, String qrcode, Team team) {
+    public Member(String name, GenderType gender, Birth birth, Address address, String qrcode, Team team) {
         this.name = name;
         this.gender = gender;
+        this.birth = birth;
+        this.address = address;
         this.qrcode = qrcode;
         if (team != null) {
             changeTeam(team);

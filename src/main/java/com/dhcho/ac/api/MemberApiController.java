@@ -2,6 +2,7 @@ package com.dhcho.ac.api;
 
 import com.dhcho.ac.entity.*;
 import com.dhcho.ac.repository.MemberRepository;
+import com.dhcho.ac.repository.TeamRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,17 @@ import java.util.stream.Collectors;
 public class MemberApiController {
 
     private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
 
     @PostMapping("/api/v1/members")
     public Result addMemberV1(@RequestBody @Valid MemberRequest request) {
-        // 해당 팀이 존재하는지 확인 request.getTeamId()
-        Member member = new Member(request.getName(), request.getGender(), request.getBirth(), request.getAddress(), request.getQrcode());
+        Team findTeam = null;
+        if (request.getTeamId() != null) {
+            findTeam = teamRepository.findById(request.getTeamId())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팀 입니다."));
+        }
+
+        Member member = new Member(request.getName(), request.getGender(), request.getBirth(), request.getAddress(), request.getQrcode(), findTeam);
         validateDuplicateMember(member);
         memberRepository.save(member);
         return new Result(new MemberDto(member));
@@ -62,7 +69,7 @@ public class MemberApiController {
         private Birth birth;
         private Address address;
         private String qrcode;
-        private String teamId;
+        private Long teamId;
     }
 
     @Data

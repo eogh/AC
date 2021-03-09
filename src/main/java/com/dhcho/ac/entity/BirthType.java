@@ -1,5 +1,5 @@
 package com.dhcho.ac.entity;
 
-public enum BirthdayType {
+public enum BirthType {
     SOLAR, LUNAR
 }

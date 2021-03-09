@@ -1,5 +1,6 @@
 package com.dhcho.ac.repository;
 
+import com.dhcho.ac.entity.GenderType;
 import com.dhcho.ac.entity.Team;
 import com.dhcho.ac.entity.Member;
 import org.assertj.core.api.OptionalAssert;
@@ -25,7 +26,7 @@ class MemberRepositoryTest {
 
     @Test
     public void testMember() {
-        Member member = new Member("memberA");
+        Member member = new Member("memberA", GenderType.MALE);
         Member saveMember = memberRepository.save(member);
 
         Member findMember = memberRepository.findById(saveMember.getId()).get();
@@ -37,8 +38,8 @@ class MemberRepositoryTest {
 
     @Test
     public void basicCRUD() {
-        Member member1 = new Member("member1");
-        Member member2 = new Member("member2");
+        Member member1 = new Member("member1", GenderType.MALE);
+        Member member2 = new Member("member2", GenderType.MALE);
         memberRepository.save(member1);
         memberRepository.save(member2);
 
@@ -66,10 +67,10 @@ class MemberRepositoryTest {
 
     @Test
     public void findByUsernameAndQrcodeIs() {
-        Member member1 = new Member("Member11", "12345");
-        Member member2 = new Member("Member11", "12345");
-        Member member3 = new Member("Member11", "123456");
-        Member member4 = new Member("Member22", "12345");
+        Member member1 = new Member("Member11", GenderType.MALE);
+        Member member2 = new Member("Member11", GenderType.MALE);
+        Member member3 = new Member("Member11", GenderType.MALE);
+        Member member4 = new Member("Member22", GenderType.MALE);
         memberRepository.save(member1);
         memberRepository.save(member2);
         memberRepository.save(member3);

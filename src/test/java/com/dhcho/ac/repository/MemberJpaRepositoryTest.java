@@ -1,5 +1,6 @@
 package com.dhcho.ac.repository;
 
+import com.dhcho.ac.entity.GenderType;
 import com.dhcho.ac.entity.Member;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ class MemberJpaRepositoryTest {
 
     @Test
     public void testMember() {
-        Member member = new Member("memberA");
+        Member member = new Member("memberA", GenderType.MALE);
         Member saveMember = memberJpaRepository.save(member);
 
         Member findMember = memberJpaRepository.find(saveMember.getId());
@@ -33,8 +34,8 @@ class MemberJpaRepositoryTest {
 
     @Test
     public void basicCRUD() {
-        Member member1 = new Member("member1");
-        Member member2 = new Member("member2");
+        Member member1 = new Member("member1", GenderType.MALE);
+        Member member2 = new Member("member2", GenderType.MALE);
         memberJpaRepository.save(member1);
         memberJpaRepository.save(member2);
 
@@ -62,10 +63,10 @@ class MemberJpaRepositoryTest {
 
     @Test
     public void findByUsernameAndQrcodeIs() {
-        Member member1 = new Member("Member11", "12345");
-        Member member2 = new Member("Member11", "12345");
-        Member member3 = new Member("Member11", "123456");
-        Member member4 = new Member("Member22", "12345");
+        Member member1 = new Member("Member11", GenderType.MALE);
+        Member member2 = new Member("Member11", GenderType.MALE);
+        Member member3 = new Member("Member11", GenderType.MALE);
+        Member member4 = new Member("Member22", GenderType.MALE);
         memberJpaRepository.save(member1);
         memberJpaRepository.save(member2);
         memberJpaRepository.save(member3);

@@ -1,6 +1,5 @@
 package com.dhcho.ac.controller;
 
-import com.dhcho.ac.dto.MemberDto;
 import com.dhcho.ac.entity.Member;
 import com.dhcho.ac.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +31,6 @@ public class MemberController {
     public Member findOne(@PathVariable("id") Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException());
-    }
-
-    @GetMapping("/members")
-    public Page<MemberDto> findAll(Pageable pageable) {
-        Page<Member> page = memberRepository.findAll(pageable);
-        Page<MemberDto> map = page.map(member -> new MemberDto(member));
-        return map;
-//        return memberRepository.findAll(pageable).map(MemberDto::new); // 동일 코드
     }
 
     @PutMapping("/members/{id}")

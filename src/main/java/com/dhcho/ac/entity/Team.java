@@ -1,5 +1,6 @@
 package com.dhcho.ac.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Team extends BaseTimeEntity {
 
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();
 

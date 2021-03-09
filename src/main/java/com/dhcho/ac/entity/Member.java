@@ -3,10 +3,10 @@ package com.dhcho.ac.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "name"})
 public class Member extends BaseTimeEntity {
@@ -19,13 +19,15 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
-    private LocalDateTime birthday;
-
     @Enumerated(EnumType.STRING)
-    private BirthdayType birthday_type;
-
-    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private GenderType gender;
+
+    @Embedded
+    private Birth birth;
+
+    @Embedded
+    private Address address;
 
     private String qrcode;
 
@@ -33,17 +35,21 @@ public class Member extends BaseTimeEntity {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
-    public Member(String name) {
+    public Member(String name, GenderType gender) {
         this.name = name;
+        this.gender = gender;
     }
 
-    public Member(String name, String qrcode) {
+    public Member(String name, GenderType gender, Address address, String qrcode) {
         this.name = name;
+        this.gender = gender;
+        this.address = address;
         this.qrcode = qrcode;
     }
 
-    public Member(String name, String qrcode, Team team) {
+    public Member(String name, GenderType gender, String qrcode, Team team) {
         this.name = name;
+        this.gender = gender;
         this.qrcode = qrcode;
         if (team != null) {
             changeTeam(team);

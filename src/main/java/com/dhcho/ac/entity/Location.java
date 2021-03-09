@@ -3,6 +3,7 @@ package com.dhcho.ac.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Location extends BaseTimeEntity {
 
@@ -22,4 +23,8 @@ public class Location extends BaseTimeEntity {
     private String name;
 
     private String desc;
+
+    public Location(String name) {
+        this.name = name;
+    }
 }

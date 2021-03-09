@@ -17,7 +17,7 @@ public class TeamApiController {
 
     private final TeamRepository teamRepository;
 
-    @PostMapping("/api/v1/Teams")
+    @PostMapping("/api/v1/teams")
     public Result addTeamV1(@RequestBody @Valid TeamRequest request) {
         Team team = new Team(request.getName());
         validateDuplicateTeam(team);
@@ -25,7 +25,7 @@ public class TeamApiController {
         return new Result(new TeamDto(team));
     }
 
-    @GetMapping("/api/v1/Teams")
+    @GetMapping("/api/v1/teams")
     public Result findTeamsV1() {
         List<Team> findTeams = teamRepository.findAll();
         List<TeamDto> collect = findTeams.stream()
@@ -35,7 +35,7 @@ public class TeamApiController {
         return new Result(collect);
     }
 
-    @PutMapping("/api/v1/Teams/{id}")
+    @PutMapping("/api/v1/teams/{id}")
     public Result updateTeamV1(@PathVariable("id") Long id,
                                 @RequestBody @Valid TeamRequest request) {
         Team findTeam = teamRepository.findById(id)
@@ -45,7 +45,7 @@ public class TeamApiController {
         return new Result(new TeamDto(findTeam));
     }
 
-    @DeleteMapping("/api/v1/Teams/{id}")
+    @DeleteMapping("/api/v1/teams/{id}")
     public Result removeTeamV1(@PathVariable("id") Long id) {
         teamRepository.deleteById(id);
         return new Result("");

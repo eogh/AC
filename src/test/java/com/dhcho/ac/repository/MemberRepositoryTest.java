@@ -1,7 +1,6 @@
 package com.dhcho.ac.repository;
 
-import com.dhcho.ac.entity.GenderType;
-import com.dhcho.ac.entity.Member;
+import com.dhcho.ac.entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +8,7 @@ import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +22,13 @@ class MemberRepositoryTest {
 
     @Test
     public void testMember() {
-        Member member = new Member("memberA", GenderType.MALE);
+        Member member = Member.builder()
+                .name("memberA")
+                .gender(GenderType.MALE)
+                .address(new Address("", "", ""))
+                .qrcode("12345")
+                .build();
+
         Member saveMember = memberRepository.save(member);
 
         Member findMember = memberRepository.findById(saveMember.getId()).get();
@@ -34,8 +40,18 @@ class MemberRepositoryTest {
 
     @Test
     public void basicCRUD() {
-        Member member1 = new Member("member1", GenderType.MALE);
-        Member member2 = new Member("member2", GenderType.MALE);
+        Member member1 = Member.builder()
+                .name("memberA")
+                .gender(GenderType.MALE)
+                .address(new Address("", "", ""))
+                .qrcode("12345")
+                .build();
+        Member member2 = Member.builder()
+                .name("memberB")
+                .gender(GenderType.MALE)
+                .address(new Address("", "", ""))
+                .qrcode("12345")
+                .build();
         memberRepository.save(member1);
         memberRepository.save(member2);
 
@@ -59,21 +75,5 @@ class MemberRepositoryTest {
 
         long deletedCount = memberRepository.count();
         assertThat(deletedCount).isEqualTo(0);
-    }
-
-    @Test
-    public void findByUsernameAndQrcodeIs() {
-        Member member1 = new Member("Member11", GenderType.MALE);
-        Member member2 = new Member("Member11", GenderType.MALE);
-        Member member3 = new Member("Member11", GenderType.MALE);
-        Member member4 = new Member("Member22", GenderType.MALE);
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-        memberRepository.save(member4);
-
-//        List<Member> list = memberRepository.findByNameAndQrcode("Member11", "12345");
-        List<Member> list = memberRepository.findUser("Member11", "12345");
-        assertThat(list.size()).isEqualTo(2);
     }
 }

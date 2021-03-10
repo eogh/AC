@@ -1,6 +1,7 @@
 package com.dhcho.ac.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +25,7 @@ public class Access extends BaseTimeEntity {
     @JoinColumn(name = "LOCATION_ID")
     private Location location;
 
+    @Builder
     public Access(Member member, Location location) {
         this.member = member;
         this.location = location;

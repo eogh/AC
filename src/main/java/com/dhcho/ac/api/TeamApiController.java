@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,12 +20,17 @@ public class TeamApiController {
 
     @PostMapping("/api/v1/teams")
     public Result addTeamV1(@RequestBody @Valid TeamRequest request) {
-        Team team = new Team(request.getName());
-        validateDuplicateTeam(team);
+        Team team = Team.builder()
+                .name(request.getName())
+                .build();
+
+        validateDuplicateTeam(team); // 동일한 이름에 대한 중복체크
         teamRepository.save(team);
+
         return new Result(new TeamDto(team));
     }
 
+    // TODO: 페이징처리 보류
     @GetMapping("/api/v1/teams")
     public Result findTeamsV1() {
         List<Team> findTeams = teamRepository.findAll();
@@ -40,19 +46,27 @@ public class TeamApiController {
                                 @RequestBody @Valid TeamRequest request) {
         Team findTeam = teamRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팀 입니다."));
-        findTeam.setName(request.getName());
+
+        findTeam.update(request.getName());
         teamRepository.flush();
+
         return new Result(new TeamDto(findTeam));
     }
 
+    // TODO: Team삭제시 (1. 해당 팀에 속한 Member를 지운다) (2. 해당 팀에 속한 Member에 TeamId를 null로 만든다) 선택
     @DeleteMapping("/api/v1/teams/{id}")
     public Result removeTeamV1(@PathVariable("id") Long id) {
-        teamRepository.deleteById(id);
-        return new Result("");
+        Team findTeam = teamRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팀 입니다."));
+
+        teamRepository.delete(findTeam);
+
+        return new Result(new TeamDto(findTeam));
     }
 
     @Data
     static class TeamRequest {
+        @NotEmpty
         private String name;
     }
 
@@ -78,7 +92,7 @@ public class TeamApiController {
         List<Team> findTeams = teamRepository.findByName(team.getName());
 
         if (!findTeams.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 팀입니다.");
+            throw new IllegalStateException("이미 존재하는 팀 입니다.");
         }
     }
 }

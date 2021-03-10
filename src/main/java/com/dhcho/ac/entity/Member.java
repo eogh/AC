@@ -1,5 +1,6 @@
 package com.dhcho.ac.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"id", "name"})
+@ToString(exclude = {"team"})
 public class Member extends BaseTimeEntity {
 
     @Id
@@ -28,32 +29,14 @@ public class Member extends BaseTimeEntity {
     @Embedded
     private Address address;
 
+    @Column(unique = true)
     private String qrcode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
-    public Member(String name, GenderType gender) {
-        this.name = name;
-        this.gender = gender;
-    }
-
-    public Member(String name, GenderType gender, Birth birth, Address address, String qrcode) {
-        this.name = name;
-        this.gender = gender;
-        this.birth = birth;
-        this.address = address;
-        this.qrcode = qrcode;
-    }
-
-    public Member(String name, GenderType gender, Address address, String qrcode) {
-        this.name = name;
-        this.gender = gender;
-        this.address = address;
-        this.qrcode = qrcode;
-    }
-
+    @Builder
     public Member(String name, GenderType gender, Birth birth, Address address, String qrcode, Team team) {
         this.name = name;
         this.gender = gender;
@@ -61,12 +44,18 @@ public class Member extends BaseTimeEntity {
         this.address = address;
         this.qrcode = qrcode;
         if (team != null) {
-            changeTeam(team);
+            this.team = team;
         }
     }
 
-    public void changeTeam(Team team) {
-        this.team = team;
-//        team.getMembers().add(this);
+    public void update(String name, GenderType gender, Birth birth, Address address, String qrcode, Team team) {
+        this.name = name;
+        this.gender = gender;
+        this.birth = birth;
+        this.address = address;
+        this.qrcode = qrcode;
+        if (team != null) {
+            this.team = team;
+        }
     }
 }

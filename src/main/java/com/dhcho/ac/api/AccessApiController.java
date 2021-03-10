@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,28 +25,35 @@ public class AccessApiController {
     @PostMapping("/api/v1/access")
     public Result addAccessV1(@RequestBody @Valid AccessRequest request) {
         Member findMember = memberRepository.findById(request.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 입니다."));
         Location findLocation = locationRepository.findById(request.getLocationId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장소 입니다."));
-        Access access = new Access(findMember, findLocation);
+
+        Access access = Access.builder()
+                .member(findMember)
+                .location(findLocation)
+                .build();
+
         accessRepository.save(access);
         return new Result(new AccessDto(access));
     }
 
+    // TODO: 페이징처리 추가
+    // TODO: fetch join 이용하여 성능 최적화 하기
     @GetMapping("/api/v1/access")
     public Result findAccessV1() {
-        // TODO: 페이징처리 추가
-        // TODO: fetch join 이용하여 성능 최적화 하기
         List<Access> findAccessList = accessRepository.findAll();
         List<AccessDto> collect = findAccessList.stream()
                 .map(AccessDto::new)
                 .collect(Collectors.toList());
+
         return new Result(collect);
     }
 
 //    // 업데이트 기능은 필요 없음
 //    @PutMapping("/api/v1/access/{id}")
 //    public Result updateAccessV1(@PathVariable("id") Long id) {
+//        return new Result("");
 //    }
 
     @DeleteMapping("/api/v1/access/{id}")

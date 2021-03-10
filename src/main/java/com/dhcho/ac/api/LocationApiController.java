@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,12 +20,17 @@ public class LocationApiController {
 
     @PostMapping("/api/v1/locations")
     public Result addLocationV1(@RequestBody @Valid LocationRequest request) {
-        Location location = new Location(request.getName());
-        validateDuplicateLocation(location);
+        Location location = Location.builder()
+                .name(request.getName())
+                .desc(request.getDesc())
+                .build();
+
+        validateDuplicateLocation(location); // 동일한 이름에 대한 중복체크
         locationRepository.save(location);
         return new Result(new LocationDto(location));
     }
 
+    // TODO: 페이징처리 보류
     @GetMapping("/api/v1/locations")
     public Result findLocationsV1() {
         List<Location> findLocations = locationRepository.findAll();
@@ -40,20 +46,30 @@ public class LocationApiController {
                                    @RequestBody @Valid LocationRequest request) {
         Location findLocation = locationRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장소 입니다."));
-        findLocation.setName(request.getName());
+
+        findLocation.update(
+                request.getName(),
+                request.getDesc());
         locationRepository.flush();
+
         return new Result(new LocationDto(findLocation));
     }
 
     @DeleteMapping("/api/v1/locations/{id}")
     public Result removeLocationV1(@PathVariable("id") Long id) {
-        locationRepository.deleteById(id);
-        return new Result("");
+        Location findLocation = locationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장소 입니다."));
+
+        locationRepository.delete(findLocation);
+
+        return new Result(new LocationDto(findLocation));
     }
 
     @Data
     static class LocationRequest {
+        @NotEmpty
         private String name;
+        private String desc;
     }
 
     @Data
@@ -80,7 +96,7 @@ public class LocationApiController {
         List<Location> findLocations = locationRepository.findByName(location.getName());
 
         if (!findLocations.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 명칭 입니다.");
+            throw new IllegalStateException("이미 존재하는 이름(장소) 입니다.");
         }
     }
 }

@@ -1,9 +1,6 @@
 package com.dhcho.ac.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,11 +17,19 @@ public class Location extends BaseTimeEntity {
     @Column(name = "LOCATION_ID")
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     private String desc;
 
-    public Location(String name) {
+    @Builder
+    public Location(String name, String desc) {
         this.name = name;
+        this.desc = desc;
+    }
+
+    public void update(String name, String desc) {
+        this.name = name;
+        this.desc = desc;
     }
 }

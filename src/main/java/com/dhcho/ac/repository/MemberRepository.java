@@ -13,6 +13,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByName(String name);
 
     // 실무에서는 주로 지정해서 사용함.
-    @Query("select m from Member m where m.name = :name and m.qrcode = :qrcode")
-    List<Member> findUser(@Param("name") String name, @Param("qrcode") String qrcode);
+    @Query("select m from Member m where m.id != :id and m.qrcode = :qrcode")
+    List<Member> findByQrcode(@Param("id") String id, @Param("qrcode") String qrcode);
 }

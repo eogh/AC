@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.dhcho.ac.entity.QMember.*;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -69,12 +70,40 @@ public class QuerydslBasicTest {
     public void startQuerydsl() {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         // 오른쪽 Gladle -> Tasks -> other -> complieQuerydsl 실행필요 (QEntity 생성)
-        QMember m = new QMember("m");
+        // QMember m = new QMember("m"); static으로 선언하여 생략
 
         Member findMember = queryFactory
-                .select(m)
-                .from(m)
-                .where(m.name.eq("member1"))
+                .select(member)
+                .from(member)
+                .where(member.name.eq("member1"))
+                .fetchOne();
+
+        assertThat(findMember.getName()).isEqualTo("member1");
+    }
+
+    @Test
+    public void search() {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(member.name.eq("member1")
+                        .and(member.gender.eq(GenderType.MALE)))
+                .fetchOne();
+
+        assertThat(findMember.getName()).isEqualTo("member1");
+    }
+
+    @Test
+    public void searchAndParam() {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where( // AND 인 경우에는 아래와 같이 ',' 으로 처리가능
+                        member.name.eq("member1"),
+                        member.gender.eq(GenderType.MALE)
+                )
                 .fetchOne();
 
         assertThat(findMember.getName()).isEqualTo("member1");

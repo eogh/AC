@@ -50,7 +50,6 @@ public class MemberApiController {
         return new Result(new MemberDto(member));
     }
 
-    // TODO: 페이징처리 추가(V2)
     @GetMapping("/api/v1/members")
     public Result findMembersV1() {
         List<Member> findMembers = memberRepository.findAll();
@@ -60,10 +59,16 @@ public class MemberApiController {
         return new Result(collect);
     }
 
+    // TODO: 페이징처리 추가
+    // TODO: 동적쿼리 적용하기 (QueryDsl 이용하면 될듯)
     @GetMapping("/api/v2/members")
-    public Page<Member> findMembersV2(Pageable pageable) {
-        Page<Member> members = memberRepository.findAll(pageable);
-        return members;
+    public Result findMembersV2(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long teamId,
+            Pageable pageable) {
+        Page<Member> page = memberRepository.findByNameAndTeamId(name, teamId, pageable);
+        Page<MemberDto> members = page.map(MemberDto::new);
+        return new Result(members);
     }
 
     // TODO: 동일한 QR코드에 대한 예외처리
